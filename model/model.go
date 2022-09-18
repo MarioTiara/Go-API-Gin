@@ -1,8 +1,21 @@
 package model
 
 type Book struct {
+	Id      int
 	Title   string
-	Writer  string
+	Author  string
 	Page    int
-	Release string
+	Release int
+}
+
+type Books struct {
+	Item []Book
+}
+
+func (b *Books) GetBooks() []Book {
+	return b.Item
+}
+
+func (b *Books) AddBooks(input Book) {
+	b.Item = append(b.Item, input)
 }
