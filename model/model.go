@@ -2,6 +2,7 @@ package model
 
 type Book struct {
 	Id      int
+	Code    string
 	Title   string
 	Author  string
 	Page    int

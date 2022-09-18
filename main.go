@@ -8,8 +8,12 @@ import (
 func main() {
 	router := gin.Default()
 	router.GET("/", controller.HomeHandler)
-	router.GET("books", controller.BooksHanlder)
-	router.GET("book", controller.BookHanlderQuery)
-	router.GET("books/:id", controller.BookHanlder)
+	bookRouter := router.Group("book")
+	{
+		bookRouter.GET("", controller.BooksHanlder)
+		bookRouter.GET(":id", controller.BookHanlder)
+		bookRouter.GET(":id/:code", controller.BookHanlderMultiParam)
+	}
+
 	router.Run(":888")
 }
