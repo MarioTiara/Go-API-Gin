@@ -42,3 +42,22 @@ func BookHanlder(c *gin.Context) {
 		})
 	}
 }
+
+func BookHanlderQuery(c *gin.Context) {
+	data := &data.DbBooks
+	id, err := strconv.Atoi(c.Query("id"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	if len(data.Item) > id {
+		book := data.Item[id]
+		c.JSON(http.StatusOK, gin.H{
+			"status": "OK",
+			"book":   book,
+		})
+	} else {
+		c.JSON(http.StatusNoContent, gin.H{
+			"message": "Content is not Found",
+		})
+	}
+}

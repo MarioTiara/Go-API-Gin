@@ -9,6 +9,7 @@ func main() {
 	router := gin.Default()
 	router.GET("/", controller.HomeHandler)
 	router.GET("books", controller.BooksHanlder)
+	router.GET("book", controller.BookHanlderQuery)
 	router.GET("books/:id", controller.BookHanlder)
 	router.Run(":888")
 }
