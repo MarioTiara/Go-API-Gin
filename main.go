@@ -7,6 +7,7 @@ import (
 
 func main() {
 	router := gin.Default()
-	router.GET("/", controller.HomeHanlder)
+	router.GET("/", controller.HomeHandler)
+	router.GET("books", controller.BooksHanlder)
 	router.Run(":888")
 }
