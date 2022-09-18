@@ -7,8 +7,10 @@ import (
 )
 
 func HomeHanlder(c *gin.Context) {
+	token := c.Request.Header["Token"]
 	c.JSON(http.StatusOK, gin.H{
-		"status":  "OK",
-		"message": "Home page",
+		"status":     "OK",
+		"message":    "Home page",
+		"token_data": token,
 	})
 }
