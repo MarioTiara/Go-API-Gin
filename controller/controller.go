@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/MarioTiara/Go-API-Gin/data"
+	"github.com/MarioTiara/Go-API-Gin/model"
 	"github.com/gin-gonic/gin"
 )
 
@@ -63,7 +64,7 @@ func BookHanlder(c *gin.Context) {
 	}
 }
 
-func BookHanlderMultiParam(c *gin.Context) {
+func BookHandlerMultiParam(c *gin.Context) {
 	data := &data.DbBooks
 	id, _ := strconv.Atoi(c.Param("id"))
 	code := c.Param("code")
@@ -80,5 +81,20 @@ func BookHanlderMultiParam(c *gin.Context) {
 				"message": fmt.Sprintf("There is no book with id: %d and code: %s", id, code),
 			})
 		}
+	}
+}
+
+func PostBookHadler(c *gin.Context) {
+	var newbook *model.Book
+	dbBooks := &data.DbBooks
+	err := c.BindJSON(&newbook)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  "Bad Request",
+			"message": "Your data input is not appropriate",
+		})
+	} else {
+		dbBooks.Item = append(dbBooks.Item, *newbook)
+		c.IndentedJSON(http.StatusOK, dbBooks.Item[len(dbBooks.Item)-1])
 	}
 }

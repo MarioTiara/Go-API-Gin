@@ -12,7 +12,8 @@ func main() {
 	{
 		bookRouter.GET("", controller.BooksHanlder)
 		bookRouter.GET(":id", controller.BookHanlder)
-		bookRouter.GET(":id/:code", controller.BookHanlderMultiParam)
+		bookRouter.GET(":id/:code", controller.BookHandlerMultiParam)
+		bookRouter.POST("", controller.PostBookHadler)
 	}
 
 	router.Run(":888")
