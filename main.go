@@ -22,12 +22,7 @@ func main() {
 	fmt.Println("Database Connection succeed")
 	db.AutoMigrate(&model.Book{})
 
-	var book model.Book
-
-	db.First(&book, 3)
-	book.Title = "Head First Design Pattern"
-	book.Code = "HFDP"
-	db.Save(&book)
+	db.Model(&model.Book{}).Where("id=?", 2).Update("Code", "CC")
 
 	router := gin.Default()
 	router.GET("/", controller.HomeHandler)
