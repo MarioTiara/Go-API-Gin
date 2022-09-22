@@ -22,31 +22,12 @@ func main() {
 	fmt.Println("Database Connection succeed")
 	db.AutoMigrate(&model.Book{})
 
-	// Get the first record ordered by primary key
-	var book1 model.Book
-	err = db.First(&book1).Error
-	if err != nil {
-		log.Fatal(err)
-	} else {
-		fmt.Println(book1)
-	}
-	// Get one record, no specified order
-	var book2 model.Book
-	err = db.Take(&book2).Error
-	if err != nil {
-		log.Fatal(err)
-	} else {
-		fmt.Println(book2)
-	}
+	var book model.Book
 
-	// Get last record, ordered by primary key desc
-	var book3 model.Book
-	err = db.Last(&book3).Error
-	if err != nil {
-		log.Fatal(err)
-	} else {
-		fmt.Println(book3)
-	}
+	db.First(&book, 3)
+	book.Title = "Head First Design Pattern"
+	book.Code = "HFDP"
+	db.Save(&book)
 
 	router := gin.Default()
 	router.GET("/", controller.HomeHandler)
