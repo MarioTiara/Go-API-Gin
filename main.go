@@ -23,18 +23,29 @@ func main() {
 	db.AutoMigrate(&model.Book{})
 
 	// Get the first record ordered by primary key
-	var book model.Book
-	err = db.First(&book).Error
+	var book1 model.Book
+	err = db.First(&book1).Error
 	if err != nil {
 		log.Fatal(err)
 	} else {
-		fmt.Println(book)
+		fmt.Println(book1)
 	}
-	err = db.Take(&book).Error
+	// Get one record, no specified order
+	var book2 model.Book
+	err = db.Take(&book2).Error
 	if err != nil {
 		log.Fatal(err)
 	} else {
-		fmt.Println(book)
+		fmt.Println(book2)
+	}
+
+	// Get last record, ordered by primary key desc
+	var book3 model.Book
+	err = db.Last(&book3).Error
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		fmt.Println(book3)
 	}
 
 	router := gin.Default()
