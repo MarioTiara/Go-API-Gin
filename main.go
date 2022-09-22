@@ -30,6 +30,12 @@ func main() {
 	} else {
 		fmt.Println(book)
 	}
+	err = db.Take(&book).Error
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		fmt.Println(book)
+	}
 
 	router := gin.Default()
 	router.GET("/", controller.HomeHandler)
