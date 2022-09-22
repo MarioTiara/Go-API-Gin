@@ -1,12 +1,12 @@
 package model
 
 type Book struct {
-	Id      int
-	Code    string
-	Title   string
-	Author  string
-	Page    int
-	Release int
+	Id      int    `json:"id" binding:"required"`
+	Code    string `json:"Code" binding:"required"`
+	Title   string `json:"title" binding:"required"`
+	Author  string `json:"author" binding:"required"`
+	Page    int    `json:"page"`
+	Release int    `json:"release"`
 }
 
 type Books struct {

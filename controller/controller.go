@@ -9,6 +9,7 @@ import (
 	"github.com/MarioTiara/Go-API-Gin/data"
 	"github.com/MarioTiara/Go-API-Gin/model"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 )
 
 func HomeHandler(c *gin.Context) {
@@ -87,14 +88,18 @@ func BookHandlerMultiParam(c *gin.Context) {
 func PostBookHadler(c *gin.Context) {
 	var newbook *model.Book
 	dbBooks := &data.DbBooks
-	err := c.BindJSON(&newbook)
+	err := c.ShouldBindJSON(&newbook)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status":  "Bad Request",
-			"message": "Your data input is not appropriate",
-		})
-	} else {
+		for _, e := range err.(validator.ValidationErrors) {
+			errorMessage := fmt.Sprintf("ërror on field %s, condition: %s", e.Field(), e.ActualTag())
+			c.JSON(http.StatusBadRequest, errorMessage)
+			return
+		}
+	}
+	if err == nil {
 		dbBooks.Item = append(dbBooks.Item, *newbook)
 		c.IndentedJSON(http.StatusOK, dbBooks.Item[len(dbBooks.Item)-1])
+
 	}
+
 }
