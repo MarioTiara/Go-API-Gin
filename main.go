@@ -21,8 +21,8 @@ func main() {
 
 	fmt.Println("Database Connection succeed")
 	db.AutoMigrate(&model.Book{})
-
-	db.Model(&model.Book{}).Where("id=?", 2).Update("Code", "CC")
+	var book model.Book
+	db.Model(&book).Where("id=?", 1).Updates(model.Book{Title: "Pakar Teofl", Code: "PT"})
 
 	router := gin.Default()
 	router.GET("/", controller.HomeHandler)
