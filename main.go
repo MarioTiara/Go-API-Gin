@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/MarioTiara/Go-API-Gin/controller"
+	"github.com/MarioTiara/Go-API-Gin/data"
 	"github.com/MarioTiara/Go-API-Gin/model"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/postgres"
@@ -21,7 +22,28 @@ func main() {
 
 	fmt.Println("Database Connection succeed")
 	db.AutoMigrate(&model.Book{})
-	db.Delete(&model.Book{}, 4)
+
+	bookRepository := data.NewRepository(db)
+	//FindAll
+	fmt.Println("===== FindByAll ===")
+	books, _ := bookRepository.FindAll()
+	for _, book := range books {
+		fmt.Println("Title: ", book.Title)
+	}
+
+	//FindByID
+	book, _ := bookRepository.FindByID(2)
+	fmt.Println("===== FindByID ===")
+	fmt.Println(book)
+
+	//Create
+	newbook, err := bookRepository.Create(model.Book{Code: "CCI", Title: "Crack Coding Interview", Author: "Mario Tiara", Page: 280, Price: 20.6, Release: 1980})
+
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		fmt.Println(newbook)
+	}
 
 	router := gin.Default()
 	router.GET("/", controller.HomeHandler)
