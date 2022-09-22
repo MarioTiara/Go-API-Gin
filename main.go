@@ -21,18 +21,14 @@ func main() {
 
 	fmt.Println("Database Connection succeed")
 	db.AutoMigrate(&model.Book{})
-	books := model.Book{}
-	books.Code = "CC"
-	books.Title = "Clean Code"
-	books.Author = "Mario C.Martin"
-	books.Page = 750
-	books.Price = 20.1
-	books.Page = 750
-	books.Release = 1997
 
-	er := db.Create(&books).Error
-	if er != nil {
-		log.Fatal("create failed")
+	// Get the first record ordered by primary key
+	var book model.Book
+	err = db.First(&book).Error
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		fmt.Println(book)
 	}
 
 	router := gin.Default()
