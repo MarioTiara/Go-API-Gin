@@ -13,6 +13,7 @@ func main() {
 		bookRouter.GET("", controller.BooksHanlder)
 		bookRouter.GET(":id", controller.BookHanlder)
 		bookRouter.POST("", controller.PostBookHadler)
+		bookRouter.DELETE(":id", controller.DeleteBookHanlder)
 	}
 
 	router.Run(":888")

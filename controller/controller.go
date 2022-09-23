@@ -91,3 +91,17 @@ func PostBookHadler(c *gin.Context) {
 	}
 
 }
+
+func DeleteBookHanlder(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		err := repository.DeleteById(id)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, err)
+		} else {
+			c.JSON(http.StatusOK, nil)
+		}
+	}
+}
