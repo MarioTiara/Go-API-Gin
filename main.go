@@ -14,6 +14,7 @@ func main() {
 		bookRouter.GET(":id", controller.BookHanlder)
 		bookRouter.POST("", controller.PostBookHadler)
 		bookRouter.DELETE(":id", controller.DeleteBookHanlder)
+		bookRouter.PUT("", controller.UpdateHandler)
 	}
 
 	router.Run(":888")
