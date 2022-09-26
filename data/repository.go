@@ -37,3 +37,20 @@ func (r *repository) Create(book model.Book) (model.Book, error) {
 	err := r.db.Create(&book).Error
 	return book, err
 }
+
+func (r *repository) DeleteById(Id int) error {
+	err := r.db.Delete(&model.Book{}, Id).Error
+	return err
+}
+
+func (r *repository) Update(book model.Book) error {
+	err := r.db.Model(&book).Updates(model.Book{
+		Code:    book.Code,
+		Title:   book.Title,
+		Author:  book.Author,
+		Page:    book.Page,
+		Release: book.Release,
+	}).Error
+
+	return err
+}

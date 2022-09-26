@@ -84,10 +84,47 @@ func PostBookHadler(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, err)
 		} else {
 			c.JSON(http.StatusOK, gin.H{
-				"status": "OK",
 				"book":   book,
+				"status": "OK",
 			})
 		}
 	}
 
+}
+
+func DeleteBookHanlder(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		err := repository.DeleteById(id)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, err)
+		} else {
+			c.JSON(http.StatusOK, nil)
+		}
+	}
+}
+
+func UpdateHandler(c *gin.Context) {
+	var incomingBook model.Book
+	err := c.ShouldBindJSON(&incomingBook)
+	if err != nil {
+		for _, e := range err.(validator.ValidationErrors) {
+			errMessage := fmt.Sprintf("errr on field %s, condition: %s", e.Field(), e.ActualTag())
+			c.JSON(http.StatusBadRequest, errMessage)
+			return
+		}
+	} else {
+		err := repository.Update(incomingBook)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, err)
+		} else {
+			message := fmt.Sprintf("Book with Id:%d has been update", incomingBook.Id)
+			c.JSON(http.StatusOK, gin.H{
+				"status":  "OK",
+				"message": message,
+			})
+		}
+	}
 }
