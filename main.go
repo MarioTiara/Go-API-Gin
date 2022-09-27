@@ -1,21 +1,28 @@
 package main
 
 import (
-	"github.com/MarioTiara/Go-API-Gin/controller"
+	"net/http"
+
+	"github.com/MarioTiara/Go-API-Gin/book"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	router := gin.Default()
-	router.GET("/", controller.HomeHandler)
+	router.GET("/", HomeHandler)
 	bookRouter := router.Group("book")
 	{
-		bookRouter.GET("", controller.BooksHanlder)
-		bookRouter.GET(":id", controller.BookHanlder)
-		bookRouter.POST("", controller.PostBookHadler)
-		bookRouter.DELETE(":id", controller.DeleteBookHanlder)
-		bookRouter.PUT("", controller.UpdateHandler)
+		bookRouter.GET("", book.BooksHanlder)
+		bookRouter.GET(":id", book.BookHanlderUrlParam)
+		bookRouter.POST("", book.PostBookHadler)
 	}
 
 	router.Run(":888")
+}
+
+func HomeHandler(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"status":  "OK",
+		"massage": "welcome Gin API Project by Mario",
+	})
 }
