@@ -4,9 +4,9 @@ import "time"
 
 type Service interface {
 	FindAll() ([]Book, error)
-	findByID(ID int) (Book, error)
+	FindByID(ID int) (Book, error)
 	Create(BookRequest BookRequest) (Book, error)
-	deleteByID(ID int) error
+	DeleteByID(ID int) error
 	Update(BookRequest BookRequest) error
 }
 
@@ -18,7 +18,7 @@ func NewService(repository Repository) *service {
 	return &service{repository}
 }
 
-func (s *service) FinAll() ([]Book, error) {
+func (s *service) FindAll() ([]Book, error) {
 	books, err := s.repository.FindAll()
 	return books, err
 }
@@ -43,7 +43,7 @@ func (s *service) Create(BookRequest BookRequest) (Book, error) {
 	return newbook, err
 }
 
-func (s *service) deleteByID(ID int) error {
+func (s *service) DeleteByID(ID int) error {
 	err := s.repository.deleteByID(ID)
 	return err
 }
