@@ -60,7 +60,7 @@ func BookHanlderUrlParam(c *gin.Context) {
 }
 
 func PostBookHadler(c *gin.Context) {
-	var newbook Book
+	var newbook BookRequest
 	err := c.ShouldBindJSON(&newbook)
 	if err != nil {
 		for _, e := range err.(validator.ValidationErrors) {
@@ -69,7 +69,7 @@ func PostBookHadler(c *gin.Context) {
 			return
 		}
 	} else {
-		book, err := bookRepository.Create(newbook)
+		book, err := bookService.Create(newbook)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, err)
 		} else {
@@ -80,4 +80,48 @@ func PostBookHadler(c *gin.Context) {
 		}
 	}
 
+}
+
+func DeleteBookHanlder(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		err := bookRepository.deleteByID(id)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, err)
+		} else {
+			c.JSON(http.StatusOK, nil)
+		}
+	}
+}
+
+func UpdateHandler(c *gin.Context) {
+	var incomingBook BookRequest
+	err := c.ShouldBindJSON(&incomingBook)
+	id, _ := incomingBook.ID.Int64()
+	if id == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "the ID can't 0",
+		})
+	}
+
+	if err != nil {
+		for _, e := range err.(validator.ValidationErrors) {
+			errMessage := fmt.Sprintf("errr on field %s, condition: %s", e.Field(), e.ActualTag())
+			c.JSON(http.StatusBadRequest, errMessage)
+			return
+		}
+	} else {
+		err := bookService.Update(incomingBook)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, err)
+		} else {
+			message := fmt.Sprintf("Book with Title:%s has been update", incomingBook.Title)
+			c.JSON(http.StatusOK, gin.H{
+				"status":  "OK",
+				"message": message,
+			})
+		}
+	}
 }

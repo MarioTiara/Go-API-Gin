@@ -15,8 +15,9 @@ func main() {
 		bookRouter.GET("", book.BooksHanlder)
 		bookRouter.GET(":id", book.BookHanlderUrlParam)
 		bookRouter.POST("", book.PostBookHadler)
+		bookRouter.DELETE(":id", book.DeleteBookHanlder)
+		bookRouter.PUT("", book.UpdateHandler)
 	}
-
 	router.Run(":888")
 }
 
