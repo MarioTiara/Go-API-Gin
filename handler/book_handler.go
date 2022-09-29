@@ -15,22 +15,22 @@ import (
 // var bookRepository = book.NewRepository(db)
 // var bookService = book.NewService(bookRepository)
 
-type bookHanlder struct {
+type bookHandler struct {
 	bookService book.Service
 }
 
-func NewBookHandler(bookService book.Service) *bookHanlder {
-	return &bookHanlder{bookService}
+func NewBookHandler(bookService book.Service) *bookHandler {
+	return &bookHandler{bookService}
 }
 
-func (hanlder *bookHanlder) BooksHanlder(c *gin.Context) {
+func (handler *bookHandler) BookHandler(c *gin.Context) {
 	query := c.Query("id")
 	if len(query) > 0 {
 		id, err := strconv.Atoi(query)
 		if err != nil {
 			log.Fatal(err)
 		} else {
-			book, err := hanlder.bookService.FindByID(id)
+			book, err := handler.bookService.FindByID(id)
 			if err != nil {
 				c.JSON(http.StatusBadRequest, err)
 			} else {
@@ -41,7 +41,7 @@ func (hanlder *bookHanlder) BooksHanlder(c *gin.Context) {
 			}
 		}
 	} else {
-		books, _ := hanlder.bookService.FindAll()
+		books, _ := handler.bookService.FindAll()
 		c.JSON(http.StatusOK, gin.H{
 			"status": "OK",
 			"books":  books,
@@ -50,12 +50,12 @@ func (hanlder *bookHanlder) BooksHanlder(c *gin.Context) {
 
 }
 
-func (hanlder *bookHanlder) BookHanlderUrlParam(c *gin.Context) {
+func (handler *bookHandler) BookhandlerUrlParam(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		log.Fatal(err)
 	} else {
-		book, err := hanlder.bookService.FindByID(id)
+		book, err := handler.bookService.FindByID(id)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, err)
 		} else {
@@ -67,7 +67,7 @@ func (hanlder *bookHanlder) BookHanlderUrlParam(c *gin.Context) {
 	}
 }
 
-func (hanlder *bookHanlder) PostBookHadler(c *gin.Context) {
+func (handler *bookHandler) PostBookHadler(c *gin.Context) {
 	var newbook book.BookRequest
 	err := c.ShouldBindJSON(&newbook)
 	if err != nil {
@@ -77,7 +77,7 @@ func (hanlder *bookHanlder) PostBookHadler(c *gin.Context) {
 			return
 		}
 	} else {
-		book, err := hanlder.bookService.Create(newbook)
+		book, err := handler.bookService.Create(newbook)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, err)
 		} else {
@@ -90,12 +90,12 @@ func (hanlder *bookHanlder) PostBookHadler(c *gin.Context) {
 
 }
 
-func (hanlder *bookHanlder) DeleteBookHanlder(c *gin.Context) {
+func (handler *bookHandler) DeleteBookhandler(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		log.Fatal(err)
 	} else {
-		err := hanlder.bookService.DeleteByID(id)
+		err := handler.bookService.DeleteByID(id)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, err)
 		} else {
@@ -104,7 +104,7 @@ func (hanlder *bookHanlder) DeleteBookHanlder(c *gin.Context) {
 	}
 }
 
-func (hanlder *bookHanlder) UpdateHandler(c *gin.Context) {
+func (handler *bookHandler) UpdateHandler(c *gin.Context) {
 	var incomingBook book.BookRequest
 	err := c.ShouldBindJSON(&incomingBook)
 	id, _ := incomingBook.ID.Int64()
@@ -121,7 +121,7 @@ func (hanlder *bookHanlder) UpdateHandler(c *gin.Context) {
 			return
 		}
 	} else {
-		err := hanlder.bookService.Update(incomingBook)
+		err := handler.bookService.Update(incomingBook)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, err)
 		} else {

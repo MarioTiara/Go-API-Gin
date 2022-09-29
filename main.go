@@ -16,13 +16,13 @@ func main() {
 	bookrepository := book.NewRepository(db)
 	bookService := book.NewService(bookrepository)
 	bookHandler := handler.NewBookHandler(bookService)
-
+	router.POST("login", handler.LoginHandler)
 	bookRouter := router.Group("book")
 	{
-		bookRouter.GET("", bookHandler.BooksHanlder)
-		bookRouter.GET(":id", bookHandler.BookHanlderUrlParam)
+		bookRouter.GET("", bookHandler.BookHandler)
+		bookRouter.GET(":id", bookHandler.BookhandlerUrlParam)
 		bookRouter.POST("", bookHandler.PostBookHadler)
-		bookRouter.DELETE(":id", bookHandler.DeleteBookHanlder)
+		bookRouter.DELETE(":id", bookHandler.DeleteBookhandler)
 		bookRouter.PUT("", bookHandler.UpdateHandler)
 	}
 	router.Run()
