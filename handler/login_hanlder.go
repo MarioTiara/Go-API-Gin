@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -27,7 +29,9 @@ type Claims struct {
 
 func LoginHandler(c *gin.Context) {
 	var crediantials Crediantials
-	err := c.ShouldBindJSON(&crediantials)
+
+	err := json.NewDecoder(c.Request.Body).Decode(&crediantials)
+	fmt.Println(crediantials)
 	if err != nil {
 		c.Writer.WriteHeader(http.StatusBadRequest)
 		return
@@ -48,7 +52,7 @@ func LoginHandler(c *gin.Context) {
 		},
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodES256, claims)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tokenString, err := token.SignedString(jwtKey)
 	if err != nil {
 		c.Writer.WriteHeader(http.StatusInternalServerError)
