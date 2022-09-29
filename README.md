@@ -3,7 +3,7 @@
 ### Project Features
 * Using Gin for CRUD Demonstration
 * Using JWT as Token via [jwt-go package](https://github.com/dgrijalva/jwt-go)
-* Using Reposotiry Pattern to communicate to DB
+* Using Repository Pattern to communicate to DB
 
 ### Project Dependencies
 * Install and Run Postgress service in your localhost for storing data
