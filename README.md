@@ -19,7 +19,7 @@
   ```
 - Start application in development
   ```
- $ go run main.go | make godev
+  $ go run main.go | make godev
   ```
 **Author**
 [Mario Tiara Pratama](https://github.com/MarioTiara)
